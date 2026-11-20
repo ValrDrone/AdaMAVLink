@@ -1,19 +1,20 @@
 # MAVLink message definitions
 
 `minimal.xml`, `standard.xml` and `common.xml` are the MAVLink message
-definitions from the MAVLink project (github.com/mavlink/mavlink), unchanged,
-as shipped in pymavlink 2.4.50 (`pymavlink/message_definitions/v1.0`). The
+definitions from the MAVLink project (github.com/mavlink/mavlink) as shipped
+in pymavlink 2.4.50 (`pymavlink/message_definitions/v1.0`), unchanged apart
+from line endings (CRLF there, LF here). The
 MAVLink project releases its XML message definitions under the MIT licence.
 
 `generator/adamavlink_gen.py` reads them; nothing else in the library
 depends on them at build time.
 
-SHA-256:
+SHA-256 (with LF line endings):
 
 ```
-5b450b2eef9e93db9c0a35ea56141bd05c197f41a9f4a7990a99b91c16814fa9  minimal.xml
-d41d5a29619345fcaa110891682e6df83eca081168f76ecfd17d59d0ea721c47  standard.xml
-ec9a32b00ed801ed6231edd0da943b782b7e5070b1134e8738a8ada0949ee2cb  common.xml
+b3627df397e3354f26efe63559e1bcec4e72a4e4562ab52cbee1bab8f9e9999e  minimal.xml
+1c92c50e0a4d4cc29e4125dff33b16062e1e285a6271292fb3a4266576487e65  standard.xml
+fbac92d0689c9b1bc03b49ebc5cdf989f3fc23026c3c856f7224e4b9af1b5f53  common.xml
 ```
 
 To update: copy the files from a newer pymavlink (or the MAVLink repository
