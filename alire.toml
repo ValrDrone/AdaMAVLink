@@ -1,0 +1,11 @@
+name = "adamavlink"
+description = "MAVLink v2 frames and messages in SPARK, proved free of run-time errors"
+version = "0.1.0-dev"
+licenses = "MIT"
+authors = ["AdaMAVLink contributors"]
+project-files = ["adamavlink.gpr"]
+tags = ["mavlink", "spark", "drone", "protocol", "embedded"]
+
+# A library with no dependencies: it builds with any GNAT that accepts Ada
+# 2022 (tested with GNAT 14.2 and 16.1), so its users choose their own
+# toolchain. The pinned toolchain for tests and proof is in tests/alire.toml.

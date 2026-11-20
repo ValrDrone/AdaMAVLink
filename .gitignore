@@ -1,0 +1,10 @@
+obj/
+lib/
+bin/
+alire/
+config/
+tests/alire/*
+!tests/alire/alire.lock
+tests/config/
+*.ali
+*.o

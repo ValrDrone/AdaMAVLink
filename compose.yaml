@@ -1,0 +1,20 @@
+services:
+  ada-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: adamavlink-ada-dev:local
+    working_dir: /work
+    volumes:
+      - .:/work
+      - alire-home:/home/dev/.alire
+      - alire-data:/home/dev/.local/share/alire
+      - alire-config:/home/dev/.config/alire
+    environment:
+      - HOME=/home/dev
+    init: true
+
+volumes:
+  alire-home:
+  alire-data:
+  alire-config:

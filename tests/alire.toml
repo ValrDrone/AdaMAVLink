@@ -1,0 +1,22 @@
+name = "adamavlink_tests"
+description = "Tests and proof for adamavlink, with the pinned toolchain"
+version = "0.1.0-dev"
+licenses = "MIT"
+authors = ["AdaMAVLink contributors"]
+project-files = ["adamavlink_tests.gpr"]
+executables = ["test_mavlink"]
+
+[[depends-on]]
+adamavlink = "*"
+
+[[pins]]
+adamavlink = { path = ".." }
+
+[[depends-on]]
+gnat_native = "=16.1.0"
+
+[[depends-on]]
+gprbuild = "=26.0.1"
+
+[[depends-on]]
+gnatprove = "=16.1.0"
