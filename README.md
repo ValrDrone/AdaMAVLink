@@ -5,23 +5,26 @@ with GNATprove. Built for flight controllers, radio links and ground
 stations that must not crash on any byte sequence they receive.
 
 Status: early. The frame layer (checksum, byte-wise parser, encoder) and
-HEARTBEAT exist; the other messages will come from a generator over the
-MAVLink XML definitions ([design](docs/design.md), Roadmap).
+16 messages generated from the MAVLink XML definitions: HEARTBEAT, the
+basic telemetry, STATUSTEXT, the command and the mission protocol messages
+([messages](docs/messages.md)). More are a line each in
+`generator/messages.txt` ([design](docs/design.md)).
 
 ## Use
 
 ```ada
 with MAVLink.Frames;
-with MAVLink.Heartbeat;
+with MAVLink.Messages.Heartbeat;
 
 P      : MAVLink.Frames.Parser;
 Result : MAVLink.Frames.Event;
 ...
 MAVLink.Frames.Push (P, Byte, Result);
 if Result = MAVLink.Frames.Message_Ready
-  and then MAVLink.Frames.Received (P).Head.Id = MAVLink.Heartbeat.Id
+  and then MAVLink.Frames.Received (P).Head.Id
+           = MAVLink.Messages.Heartbeat.Id
 then
-   Beat := MAVLink.Heartbeat.Unpack (MAVLink.Frames.Received (P));
+   Beat := MAVLink.Messages.Heartbeat.Unpack (MAVLink.Frames.Received (P));
 end if;
 ```
 
@@ -41,17 +44,21 @@ Tests and proof run in a container with the toolchain pinned in
 `tests/alire.toml`:
 
 ```sh
-make setup   # build the image, fetch the toolchain
+make setup      # build the image, fetch the toolchain
+make generate   # after changing generator/ or definitions/
 make test
 make prove
+make ci         # all of it, with GNAT 14.2 too
 ```
 
 ## Provenance
 
-Written from the published MAVLink specification (mavlink.io) and message
-definitions (MIT-licensed). No code from other MAVLink implementations is
+Written from the published MAVLink specification (mavlink.io). The message
+definitions in `definitions/` are the MAVLink project's, MIT-licensed
+([provenance](definitions/README.md)); the generator that turns them into
+Ada is this project's own. No code from other MAVLink implementations is
 included. The tests' expected frames were produced by running pymavlink
-(`tests/vectors/generate.py`); only its output is used.
+(`tests/vectors/`); only its output is used.
 
 ## Licence
 

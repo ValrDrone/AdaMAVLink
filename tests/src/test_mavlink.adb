@@ -2,7 +2,9 @@ with Ada.Text_IO;
 with Interfaces;
 with MAVLink;           use MAVLink;
 with MAVLink.Frames;    use MAVLink.Frames;
-with MAVLink.Heartbeat;
+with MAVLink.Floats;
+with MAVLink.Messages.Heartbeat;
+with MAVLink.Wire;
 
 --  The MAVLink v2 frame layer and HEARTBEAT against frames encoded by
 --  pymavlink 2.4.50 (MAVLINK20=1, dialect v20.common), an independent
@@ -11,7 +13,12 @@ procedure Test_MAVLink is
    use type Interfaces.Unsigned_8;
    use type Interfaces.Unsigned_16;
    use type Interfaces.Unsigned_32;
-   use type MAVLink.Heartbeat.System_State;
+   use type Interfaces.Integer_8;
+   use type Interfaces.Integer_32;
+   use type Interfaces.Integer_64;
+   use type Interfaces.Integer_16;
+   package Heartbeat renames MAVLink.Messages.Heartbeat;
+   use type Heartbeat.Content;
 
    procedure Check (Condition : Boolean; Message : String) is
    begin
@@ -61,16 +68,13 @@ begin
      (Head    => (Sequence => 7, System => 1, Component => 1, Id => 0,
                   Compat_Flags => 0),
       Payload =>
-        MAVLink.Heartbeat.Pack
-          ((Custom_Mode  => 16#1234_5678#,
-            Vehicle_Type => MAVLink.Heartbeat.Type_Quadrotor,
-            Autopilot    => MAVLink.Heartbeat.Autopilot_Generic,
-            Base_Mode    =>
-              MAVLink.Heartbeat.Mode_Safety_Armed
-              or MAVLink.Heartbeat.Mode_Custom_Enabled,
-            State_Known  => True,
-            State        => MAVLink.Heartbeat.Active,
-            Version      => MAVLink.Heartbeat.Protocol_Version)),
+        Heartbeat.Pack
+          ((Custom_Mode     => 16#1234_5678#,
+            Type_Field      => 2,       --  MAV_TYPE_QUADROTOR
+            Autopilot       => 0,       --  MAV_AUTOPILOT_GENERIC
+            Base_Mode       => 16#81#,  --  armed, custom mode enabled
+            System_Status   => 4,       --  MAV_STATE_ACTIVE
+            Mavlink_Version => 3)),
       Frame   => Frame,
       Last    => Last);
    Check (Last = Quad'Length and then Frame (1 .. Last) = Quad,
@@ -80,10 +84,7 @@ begin
      (Head    => (Sequence => 255, System => 255, Component => 190, Id => 0,
                   Compat_Flags => 0),
       Payload =>
-        MAVLink.Heartbeat.Pack
-          ((Custom_Mode => 5, Vehicle_Type => 0, Autopilot => 0,
-            Base_Mode   => 0, State_Known => True,
-            State       => MAVLink.Heartbeat.Uninitialised, Version => 0)),
+        Heartbeat.Pack ((Custom_Mode => 5, others => 0)),
       Frame   => Frame,
       Last    => Last);
    Check (Last = Short'Length and then Frame (1 .. Last) = Short,
@@ -99,7 +100,7 @@ begin
    --  Parsing.
    declare
       P : Parser;
-      H : MAVLink.Heartbeat.Content;
+      H : Heartbeat.Content;
       M : Message;
    begin
       Check (Feed (P, Quad) = Message_Ready, "parse the quadrotor heartbeat");
@@ -109,24 +110,22 @@ begin
                    Compat_Flags => 0)
          and M.Length = 9,
          "header and length");
-      H := MAVLink.Heartbeat.Unpack (M);
+      H := Heartbeat.Unpack (M);
       Check
         (H.Custom_Mode = 16#1234_5678#
-         and H.Vehicle_Type = MAVLink.Heartbeat.Type_Quadrotor
-         and H.Autopilot = MAVLink.Heartbeat.Autopilot_Generic
+         and H.Type_Field = 2
+         and H.Autopilot = 0
          and H.Base_Mode = 16#81#
-         and H.State_Known
-         and H.State = MAVLink.Heartbeat.Active
-         and H.Version = 3,
+         and H.System_Status = 4
+         and H.Mavlink_Version = 3,
          "heartbeat fields");
 
       Check (Feed (P, Short) = Message_Ready, "parse a truncated heartbeat");
       M := Received (P);
-      H := MAVLink.Heartbeat.Unpack (M);
+      H := Heartbeat.Unpack (M);
       Check
         (M.Length = 1 and M.Head.System = 255 and M.Head.Component = 190
-         and H.Custom_Mode = 5 and H.Vehicle_Type = 0 and H.Base_Mode = 0
-         and H.State_Known and H.Version = 0,
+         and H = (Custom_Mode => 5, others => 0),
          "truncated fields read as zero");
       Check (Counts (P).Messages = 2, "two messages counted");
    end;
@@ -155,12 +154,12 @@ begin
       Check (Counts (P).Bad_Checksums = 1, "bad checksum counted");
    end;
 
-   --  A message ID this build does not know (SYS_STATUS, 1).
+   --  A message ID this build does not know (SYSTEM_TIME, 2).
    declare
       P       : Parser;
       Foreign : Byte_Array := Quad;
    begin
-      Foreign (8) := 1;
+      Foreign (8) := 2;
       Check (Feed (P, Foreign) = Unknown_Message, "unknown message ID");
       Check (Counts (P).Unknown_Messages = 1, "unknown message counted");
    end;
@@ -188,17 +187,37 @@ begin
       Check (Counts (P).Unsupported_Flags = 1, "unsupported flags counted");
    end;
 
-   --  A system status outside MAV_STATE is unknown, not a state.
+   --  Signed fields, both directions, at their extremes.
    declare
-      M : Message;
+      B : Byte_Array (1 .. 8) := [others => 0];
+      P : Payload_Bytes := [others => 0];
    begin
-      M.Head.Id := MAVLink.Heartbeat.Id;
-      M.Length := 9;
-      M.Payload (8) := 200;
-      Check
-        (not MAVLink.Heartbeat.Unpack (M).State_Known,
-         "status 200 is unknown");
+      MAVLink.Wire.Put_I16 (B, 1, -2);
+      Check (B (1 .. 2) = [16#FE#, 16#FF#], "int16 -2");
+      MAVLink.Wire.Put_I64 (B, 1, Interfaces.Integer_64'First);
+      P (1 .. 8) := B;
+      Check (MAVLink.Wire.I64 (P, 1) = Interfaces.Integer_64'First,
+             "int64 first round trip");
+      MAVLink.Wire.Put_I32 (B, 1, Interfaces.Integer_32'First);
+      P (1 .. 8) := B;
+      Check (MAVLink.Wire.I32 (P, 1) = Interfaces.Integer_32'First,
+             "int32 first round trip");
+      P (1) := 16#80#;
+      Check (MAVLink.Wire.I8 (P, 1) = -128, "int8 -128");
    end;
+
+   --  Floats: finite values convert both ways; NaN and infinity are not
+   --  finite.
+   Check (MAVLink.Floats.To_Bits (Float'(1.5)) = 16#3FC0_0000#, "1.5 bits");
+   Check (MAVLink.Floats.To_Float (16#C120_0000#) = -10.0, "-10.0 value");
+   Check (not MAVLink.Floats.Is_Finite (MAVLink.Floats.NaN), "NaN");
+   Check (not MAVLink.Floats.Is_Finite (Float_Bits'(16#FF80_0000#)),
+          "minus infinity");
+   Check (MAVLink.Floats.To_Long_Float
+            (MAVLink.Floats.To_Bits (Long_Float'(-0.25))) = -0.25,
+          "double round trip");
+   Check (not MAVLink.Floats.Is_Finite (MAVLink.Floats.Double_NaN),
+          "double NaN");
 
    Ada.Text_IO.Put_Line ("MAVLink frame and heartbeat tests passed");
 end Test_MAVLink;

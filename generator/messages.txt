@@ -1,0 +1,26 @@
+# Messages the generator writes codecs for, from definitions/common.xml and
+# the files it includes. One name per line; # starts a comment.
+
+# Every system
+HEARTBEAT
+
+# Vehicle status and telemetry
+SYS_STATUS
+GPS_RAW_INT
+ATTITUDE
+GLOBAL_POSITION_INT
+STATUSTEXT
+
+# Commands
+COMMAND_LONG
+COMMAND_INT
+COMMAND_ACK
+
+# Mission protocol
+MISSION_COUNT
+MISSION_REQUEST_INT
+MISSION_ITEM_INT
+MISSION_ACK
+MISSION_CURRENT
+MISSION_ITEM_REACHED
+MISSION_CLEAR_ALL

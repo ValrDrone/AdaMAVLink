@@ -8,7 +8,7 @@ FROM docker.io/library/debian:trixie-slim@sha256:a72b4433de1cf7d6bae0c4cee74d054
 ARG DEBIAN_SNAPSHOT=20261025T000000Z
 COPY scripts/apt-install.sh scripts/install-alr.sh /tmp/
 RUN sh /tmp/apt-install.sh ${DEBIAN_SNAPSHOT} \
-    ca-certificates curl unzip git make build-essential libgmp10 libmpfr6 \
+    ca-certificates curl unzip git make build-essential python3 libgmp10 libmpfr6 \
     libmpc3 && \
     sh /tmp/install-alr.sh
 

@@ -38,6 +38,12 @@ package MAVLink is
 
    type Message_Id is range 0 .. 2**24 - 1;
 
+   --  A float or double field as its IEEE 754 bits. MAVLink uses NaN for
+   --  "unknown" in many fields, which Float cannot hold in SPARK, so
+   --  messages keep the bits; MAVLink.Floats converts finite ones.
+   type Float_Bits is new Unsigned_32;
+   type Double_Bits is new Unsigned_64;
+
    subtype Payload_Length is Natural range 0 .. Max_Payload;
    subtype Payload_Bytes is Byte_Array (1 .. Max_Payload);
 
