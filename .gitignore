@@ -8,3 +8,4 @@ tests/alire/*
 tests/config/
 *.ali
 *.o
+__pycache__/
