@@ -27,7 +27,7 @@ build:
 
 test:
 	$(ADA) $(IN_TESTS) gprbuild -p -P adamavlink_tests.gpr -XADAMAVLINK_BUILD_MODE=dev
-	$(ADA) sh -c 'tests/bin/test_mavlink && tests/bin/test_messages'
+	$(ADA) sh -c 'tests/bin/test_mavlink && tests/bin/test_messages && tests/bin/test_envelope'
 
 # The oldest supported compiler (scripts/test-gnat14.sh).
 test-gnat14:

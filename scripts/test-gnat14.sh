@@ -14,7 +14,7 @@ for mode in dev release; do
 done
 $alr exec -- gprbuild -q -p -aP . -P tests/adamavlink_tests.gpr \
     -XADAMAVLINK_BUILD_MODE=dev --relocate-build-tree="$build" --root-dir=.
-for test in test_mavlink test_messages; do
+for test in test_mavlink test_messages test_envelope; do
     "$(find "$build" -name $test -type f)"
 done
 rm -rf "$settings" "$build"

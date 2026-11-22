@@ -8,7 +8,9 @@ Status: early. The frame layer (checksum, byte-wise parser, encoder) and
 16 messages generated from the MAVLink XML definitions: HEARTBEAT, the
 basic telemetry, STATUSTEXT, the command and the mission protocol messages
 ([messages](docs/messages.md)). More are a line each in
-`generator/messages.txt` ([design](docs/design.md)).
+`generator/messages.txt` ([design](docs/design.md)). `MAVLink.Envelope`
+carries frames over a CRSF serial line in the CRSF MAVLink envelope
+(type `16#AA#`), next to RC channels and link statistics.
 
 ## Use
 

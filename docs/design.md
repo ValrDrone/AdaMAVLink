@@ -24,6 +24,30 @@ up to the payload's end, then over the message's CRC_EXTRA byte.
 `MAVLink.Dialect` lists the messages this build knows with their CRC_EXTRA
 and full payload length. It is generated with the message packages.
 
+## MAVLink over CRSF
+
+`MAVLink.Envelope` carries MAVLink frames on a CRSF serial line, next to RC
+channels and link statistics, in the CRSF MAVLink envelope (frame type
+`16#AA#` in the TBS CRSF specification). A CRSF frame holds at most 58
+MAVLink bytes, so a frame is split into chunks; each envelope's payload is
+one byte with the last chunk's index (high nibble) and this chunk's index
+(low nibble), both from 0, then the data size, then the data. The largest
+MAVLink frame (280 bytes, signed) takes five envelopes.
+
+- `Split` gives the payload of one envelope of a frame; every chunk but the
+  last is full.
+- A `Joiner` takes envelope payloads in arrival order and reports
+  `Frame_Ready` when the last chunk completes a frame; `Joined` then holds
+  its bytes for `MAVLink.Frames.Push`, which checks the MAVLink checksum.
+  The envelope has no frame number, so a chunk that does not follow the
+  previous one (lost, repeated, reordered) drops the partial frame
+  (`Out_Of_Order`); a size of 0 or above 58, a payload shorter than its
+  size, an index past the last index, or a frame longer than 280 bytes is
+  `Malformed`. Both are counted, with the partial frames given up.
+
+The CRSF frame around the payload (address, length, type, CRC-8) is the
+user's: AdaPilot and AdaLRS each have their own CRSF codec.
+
 ## Messages
 
 Each message is a child package of `MAVLink.Messages`, generated from the
@@ -103,7 +127,13 @@ Not proved:
   and `Unpack` the content back. The script also checks each CRC_EXTRA and
   payload length against pymavlink's.
 
-`make test` runs both with GNAT 16.1, `make test-gnat14` with GNAT 14.2.
+- `tests/src/test_envelope.adb`: the envelope's chunk layout (cross-checked
+  with uf-crsf 0.6.1's encoding), frames of one, two and five envelopes
+  split and joined back and parsed, lost, repeated and malformed envelopes,
+  and recovery after each.
+
+`make test` runs all three with GNAT 16.1, `make test-gnat14` with GNAT
+14.2.
 
 ## Roadmap
 
