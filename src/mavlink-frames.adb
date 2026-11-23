@@ -41,6 +41,15 @@ package body MAVLink.Frames is
       end if;
    end Outcome;
 
+   function Is_Consistent (P : Parser) return Boolean is
+     (case P.Phase is
+        when Start                      => True,
+        when Length | Incompat | Compat | Sequence | System | Component
+         | Id_Low | Id_Middle | Id_High => P.Count = 0,
+        when Payload                    => P.Count < P.Current.Length,
+        when Checksum_Low | Checksum_High | Signature =>
+          P.Count = P.Current.Length);
+
    procedure Push (P : in out Parser; B : Unsigned_8; Result : out Event) is
    begin
       Result := None;
@@ -101,9 +110,8 @@ package body MAVLink.Frames is
               (if P.Current.Length = 0 then Checksum_Low else Payload);
 
          when Payload       =>
-            --  Every entry into this phase has Count < Length: a new frame
-            --  starts at zero, and the phase is left as soon as it reaches
-            --  Length.
+            --  Count < Current.Length by Push's precondition; reaching
+            --  Length leaves the phase.
             P.Count := P.Count + 1;
             P.Current.Payload (P.Count) := B;
             if P.Count = P.Current.Length then

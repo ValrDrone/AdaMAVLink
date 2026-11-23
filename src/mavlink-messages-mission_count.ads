@@ -20,8 +20,8 @@ package MAVLink.Messages.Mission_Count is
       Target_Component : Unsigned_8 := 0;
       --  Number of mission items in the sequence
       Count : Unsigned_16 := 0;
-      --  Mission type. (MAV_MISSION_TYPE) Extension field: zero from senders
-      --  that predate it.
+      --  Mission type. (MAVLink.Enums.Mav_Mission_Type) Extension field: zero
+      --  from senders that predate it.
       Mission_Type : Unsigned_8 := 0;
    end record;
 

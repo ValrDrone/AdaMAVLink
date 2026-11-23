@@ -13,9 +13,9 @@ package MAVLink.Messages.Command_Ack is
    subtype Payload is Byte_Array (1 .. Length);
 
    type Content is record
-      --  Command ID (of acknowledged command). (MAV_CMD)
+      --  Command ID (of acknowledged command). (MAVLink.Enums.Mav_Cmd)
       Command : Unsigned_16 := 0;
-      --  Result of command. (MAV_RESULT)
+      --  Result of command. (MAVLink.Enums.Mav_Result)
       Result : Unsigned_8 := 0;
       --  Also used as result_param1, it can be set with a enum containing the
       --  errors reasons of why the command was denied or the progress

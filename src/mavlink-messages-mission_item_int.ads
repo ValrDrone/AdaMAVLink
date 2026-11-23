@@ -26,9 +26,9 @@ package MAVLink.Messages.Mission_Item_Int is
       --  monotonically for each waypoint, no gaps in the sequence
       --  (0,1,2,3,4).
       Seq : Unsigned_16 := 0;
-      --  The coordinate system of the waypoint. (MAV_FRAME)
+      --  The coordinate system of the waypoint. (MAVLink.Enums.Mav_Frame)
       Frame : Unsigned_8 := 0;
-      --  The scheduled action for the waypoint. (MAV_CMD)
+      --  The scheduled action for the waypoint. (MAVLink.Enums.Mav_Cmd)
       Command : Unsigned_16 := 0;
       --  false:0, true:1
       Current : Unsigned_8 := 0;
@@ -52,8 +52,8 @@ package MAVLink.Messages.Mission_Item_Int is
       --  PARAM7 / z position: global: altitude in meters (relative or
       --  absolute, depending on frame. (IEEE bits: MAVLink.Floats)
       Z : Float_Bits := 0;
-      --  Mission type. (MAV_MISSION_TYPE) Extension field: zero from senders
-      --  that predate it.
+      --  Mission type. (MAVLink.Enums.Mav_Mission_Type) Extension field: zero
+      --  from senders that predate it.
       Mission_Type : Unsigned_8 := 0;
    end record;
 

@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: setup generate check-generated build test test-gnat14 prove vectors vectors-messages ci clean help
+.PHONY: setup generate check-generated build test test-gnat14 prove vectors vectors-messages vectors-enums ci clean help
 
 COMPOSE := docker compose
 ADA := $(COMPOSE) run --rm ada-dev
@@ -27,7 +27,7 @@ build:
 
 test:
 	$(ADA) $(IN_TESTS) gprbuild -p -P adamavlink_tests.gpr -XADAMAVLINK_BUILD_MODE=dev
-	$(ADA) sh -c 'tests/bin/test_mavlink && tests/bin/test_messages && tests/bin/test_envelope'
+	$(ADA) sh -c 'tests/bin/test_mavlink && tests/bin/test_messages && tests/bin/test_enums && tests/bin/test_statustext && tests/bin/test_envelope'
 
 # The oldest supported compiler (scripts/test-gnat14.sh).
 test-gnat14:
@@ -45,6 +45,11 @@ vectors:
 vectors-messages:
 	uv run --no-project --with pymavlink==2.4.50 python -I tests/vectors/generate_messages.py
 
+# Rewrites the enum test from the definitions, cross-checked against
+# pymavlink's published constants.
+vectors-enums:
+	uv run --no-project --with pymavlink==2.4.50 python -I tests/vectors/generate_enums.py
+
 ci: check-generated build test test-gnat14 prove
 
 clean:
@@ -59,4 +64,5 @@ help:
 	@echo "make prove    prove the library with GNATprove"
 	@echo "make vectors  print the frame test's pymavlink vectors"
 	@echo "make vectors-messages  rewrite the message test from pymavlink"
+	@echo "make vectors-enums  rewrite the enum test from pymavlink"
 	@echo "make ci       check generated code, build, test and prove"

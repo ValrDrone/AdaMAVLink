@@ -14,16 +14,16 @@ package MAVLink.Messages.Sys_Status is
 
    type Content is record
       --  Bitmap showing which onboard controllers and sensors are present.
-      --  Value of 0: not present. Value of 1: present.
-      --  (MAV_SYS_STATUS_SENSOR)
+      --  Value of 0: not present. Value of 1: present. (flags:
+      --  MAVLink.Enums.Mav_Sys_Status_Sensor)
       Onboard_Control_Sensors_Present : Unsigned_32 := 0;
       --  Bitmap showing which onboard controllers and sensors are enabled:
-      --  Value of 0: not enabled. Value of 1: enabled.
-      --  (MAV_SYS_STATUS_SENSOR)
+      --  Value of 0: not enabled. Value of 1: enabled. (flags:
+      --  MAVLink.Enums.Mav_Sys_Status_Sensor)
       Onboard_Control_Sensors_Enabled : Unsigned_32 := 0;
       --  Bitmap showing which onboard controllers and sensors have an error
       --  (or are operational). Value of 0: error. Value of 1: healthy.
-      --  (MAV_SYS_STATUS_SENSOR)
+      --  (flags: MAVLink.Enums.Mav_Sys_Status_Sensor)
       Onboard_Control_Sensors_Health : Unsigned_32 := 0;
       --  Maximum usage in percent of the mainloop time. Values: [0-1000] -
       --  should always be below 1000 [d%]
@@ -56,19 +56,19 @@ package MAVLink.Messages.Sys_Status is
       --  Autopilot-specific errors
       Errors_Count4 : Unsigned_16 := 0;
       --  Bitmap showing which onboard controllers and sensors are present.
-      --  Value of 0: not present. Value of 1: present.
-      --  (MAV_SYS_STATUS_SENSOR_EXTENDED) Extension field: zero from senders
-      --  that predate it.
+      --  Value of 0: not present. Value of 1: present. (flags:
+      --  MAVLink.Enums.Mav_Sys_Status_Sensor_Extended) Extension field: zero
+      --  from senders that predate it.
       Onboard_Control_Sensors_Present_Extended : Unsigned_32 := 0;
       --  Bitmap showing which onboard controllers and sensors are enabled:
-      --  Value of 0: not enabled. Value of 1: enabled.
-      --  (MAV_SYS_STATUS_SENSOR_EXTENDED) Extension field: zero from senders
-      --  that predate it.
+      --  Value of 0: not enabled. Value of 1: enabled. (flags:
+      --  MAVLink.Enums.Mav_Sys_Status_Sensor_Extended) Extension field: zero
+      --  from senders that predate it.
       Onboard_Control_Sensors_Enabled_Extended : Unsigned_32 := 0;
       --  Bitmap showing which onboard controllers and sensors have an error
       --  (or are operational). Value of 0: error. Value of 1: healthy.
-      --  (MAV_SYS_STATUS_SENSOR_EXTENDED) Extension field: zero from senders
-      --  that predate it.
+      --  (flags: MAVLink.Enums.Mav_Sys_Status_Sensor_Extended) Extension
+      --  field: zero from senders that predate it.
       Onboard_Control_Sensors_Health_Extended : Unsigned_32 := 0;
    end record;
 

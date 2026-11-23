@@ -65,8 +65,14 @@ package MAVLink.Frames is
 
    function Counts (P : Parser) return Statistics;
 
+   --  Invariant of a parser built by default and only modified by Push,
+   --  restated in Push's own contracts so it is available to provers.
+   function Is_Consistent (P : Parser) return Boolean;
+
    --  Feed one byte.
-   procedure Push (P : in out Parser; B : Unsigned_8; Result : out Event);
+   procedure Push (P : in out Parser; B : Unsigned_8; Result : out Event)
+     with Pre  => Is_Consistent (P),
+          Post => Is_Consistent (P);
 
    subtype Frame_Bytes is Byte_Array (1 .. Max_Frame);
    subtype Frame_Size is Natural range Header_Length + 1 + Checksum_Length

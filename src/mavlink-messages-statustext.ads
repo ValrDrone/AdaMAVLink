@@ -18,7 +18,7 @@ package MAVLink.Messages.Statustext is
 
    type Content is record
       --  Severity of status. Relies on the definitions within RFC-5424.
-      --  (MAV_SEVERITY)
+      --  (MAVLink.Enums.Mav_Severity)
       Severity : Unsigned_8 := 0;
       --  Status text message, without null termination character. UTF-8
       --  encoded.
@@ -36,6 +36,18 @@ package MAVLink.Messages.Statustext is
    end record;
 
    function Pack (C : Content) return Payload;
+
+   --  Text as a String: the characters before the first
+   --  NUL, whose count Text_Length gives (0 for an empty or
+   --  unterminated text).
+   function Text (C : Content) return String;
+   function Text_Length (C : Content) return Natural
+   with Post => Text_Length'Result <= C.Text'Length;
+
+   --  Copy S into the field, NUL-padding the rest; S must
+   --  fit in the field.
+   procedure Put_Text (C : in out Content; S : String)
+   with Pre => S'Length <= 50;
 
    --  The content of a received message M for this ID.
    function Unpack (M : Message) return Content

@@ -103,7 +103,7 @@ def case(rng, message, sequence):
 
 
 def main():
-    messages = gen.read_messages(ROOT / "definitions" / "common.xml")
+    messages, _enums = gen.read_definitions(ROOT / "definitions" / "common.xml")
     names = gen.read_selection(ROOT / "generator" / "messages.txt")
     rng = random.Random(20261120)
     cases = [case(rng, messages[n], i % 256) for i, n in enumerate(names)]

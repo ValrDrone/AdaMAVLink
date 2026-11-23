@@ -20,7 +20,7 @@ package MAVLink.Messages.Command_Long is
       Target_System : Unsigned_8 := 0;
       --  Component which should execute the command, 0 for all components
       Target_Component : Unsigned_8 := 0;
-      --  Command ID (of command to send). (MAV_CMD)
+      --  Command ID (of command to send). (MAVLink.Enums.Mav_Cmd)
       Command : Unsigned_16 := 0;
       --  0: First transmission of this command. 1-255: Confirmation
       --  transmissions (e.g. for kill command)

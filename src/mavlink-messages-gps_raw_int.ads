@@ -18,7 +18,7 @@ package MAVLink.Messages.Gps_Raw_Int is
       --  end can infer timestamp format (since 1.1.1970 or since system boot)
       --  by checking for the magnitude of the number. [us]
       Time_Usec : Unsigned_64 := 0;
-      --  GPS fix type. (GPS_FIX_TYPE)
+      --  GPS fix type. (MAVLink.Enums.Gps_Fix_Type)
       Fix_Type : Unsigned_8 := 0;
       --  Latitude (WGS84, EGM96 ellipsoid) [degE7]
       Lat : Integer_32 := 0;

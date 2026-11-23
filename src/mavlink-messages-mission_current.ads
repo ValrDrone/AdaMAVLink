@@ -24,8 +24,8 @@ package MAVLink.Messages.Mission_Current is
       --  zero from senders that predate it.
       Total : Unsigned_16 := 0;
       --  Mission state machine state. MISSION_STATE_UNKNOWN if state
-      --  reporting not supported. (MISSION_STATE) Extension field: zero from
-      --  senders that predate it.
+      --  reporting not supported. (MAVLink.Enums.Mission_State) Extension
+      --  field: zero from senders that predate it.
       Mission_State : Unsigned_8 := 0;
       --  Vehicle is in a mode that can execute mission items or suspended. 0:
       --  Unknown, 1: In mission mode, 2: Suspended (not in mission mode).

@@ -25,4 +25,40 @@ package body MAVLink.Messages.Statustext is
       Result.Chunk_Seq := Wire.U8 (M.Payload, 54);
       return Result;
    end Unpack;
+   function Text (C : Content) return String is
+      Result : String (1 .. 50);
+      L      : Natural;
+   begin
+      for K in 1 .. 50 loop
+         Result (K) := Character'Val (C.Text (K));
+      end loop;
+      L := Text_Length (C);
+      if L = 0 then
+         return "";
+      else
+         return Result (1 .. L);
+      end if;
+   end Text;
+
+   function Text_Length (C : Content) return Natural is
+      Last : Natural := 0;
+   begin
+      for K in C.Text'Range loop
+         pragma Loop_Invariant (Last <= C.Text'Length);
+         if C.Text (K) = 16#00# then
+            exit;
+         end if;
+         Last := K;
+      end loop;
+      return Last;
+   end Text_Length;
+
+   procedure Put_Text (C : in out Content; S : String) is
+   begin
+      C.Text := [others => 16#00#];
+      for K in S'Range loop
+         C.Text (K - S'First + 1) := Unsigned_8'Pos (Character'Pos (S (K)));
+      end loop;
+   end Put_Text;
+
 end MAVLink.Messages.Statustext;

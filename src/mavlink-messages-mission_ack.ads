@@ -17,10 +17,10 @@ package MAVLink.Messages.Mission_Ack is
       Target_System : Unsigned_8 := 0;
       --  Component ID
       Target_Component : Unsigned_8 := 0;
-      --  Mission result. (MAV_MISSION_RESULT)
+      --  Mission result. (MAVLink.Enums.Mav_Mission_Result)
       Type_Field : Unsigned_8 := 0;
-      --  Mission type. (MAV_MISSION_TYPE) Extension field: zero from senders
-      --  that predate it.
+      --  Mission type. (MAVLink.Enums.Mav_Mission_Type) Extension field: zero
+      --  from senders that predate it.
       Mission_Type : Unsigned_8 := 0;
    end record;
 

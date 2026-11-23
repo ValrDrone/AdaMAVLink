@@ -20,16 +20,16 @@ package MAVLink.Messages.Heartbeat is
       --  vehicle type (quadrotor, helicopter, etc.). For other components the
       --  component type (e.g. camera, gimbal, etc.). This should be used in
       --  preference to component id for identifying the component type.
-      --  (MAV_TYPE)
+      --  (MAVLink.Enums.Mav_Type)
       Type_Field : Unsigned_8 := 0;
       --  Autopilot type / class. Use MAV_AUTOPILOT_INVALID for components
-      --  that are not flight controllers. (MAV_AUTOPILOT)
+      --  that are not flight controllers. (MAVLink.Enums.Mav_Autopilot)
       Autopilot : Unsigned_8 := 0;
-      --  System mode bitmap. (MAV_MODE_FLAG)
+      --  System mode bitmap. (flags: MAVLink.Enums.Mav_Mode_Flag)
       Base_Mode : Unsigned_8 := 0;
       --  A bitfield for use for autopilot-specific flags
       Custom_Mode : Unsigned_32 := 0;
-      --  System status flag. (MAV_STATE)
+      --  System status flag. (MAVLink.Enums.Mav_State)
       System_Status : Unsigned_8 := 0;
       --  MAVLink version, not writable by user, gets added by protocol
       --  because of magic data type: uint8_t_mavlink_version

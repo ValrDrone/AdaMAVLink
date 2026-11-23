@@ -17,9 +17,9 @@ package MAVLink.Messages.Command_Int is
       Target_System : Unsigned_8 := 0;
       --  Component ID
       Target_Component : Unsigned_8 := 0;
-      --  The coordinate system of the COMMAND. (MAV_FRAME)
+      --  The coordinate system of the COMMAND. (MAVLink.Enums.Mav_Frame)
       Frame : Unsigned_8 := 0;
-      --  The scheduled action for the mission item. (MAV_CMD)
+      --  The scheduled action for the mission item. (MAVLink.Enums.Mav_Cmd)
       Command : Unsigned_16 := 0;
       --  Not used.
       Current : Unsigned_8 := 0;
