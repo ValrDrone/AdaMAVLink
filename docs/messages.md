@@ -12,6 +12,7 @@ Generated from `definitions/common.xml` by
 | ATTITUDE | 30 | `MAVLink.Messages.Attitude` | 28 | 39 |
 | GLOBAL_POSITION_INT | 33 | `MAVLink.Messages.Global_Position_Int` | 28 | 104 |
 | MISSION_CURRENT | 42 | `MAVLink.Messages.Mission_Current` | 6 | 28 |
+| MISSION_REQUEST_LIST | 43 | `MAVLink.Messages.Mission_Request_List` | 3 | 132 |
 | MISSION_COUNT | 44 | `MAVLink.Messages.Mission_Count` | 5 | 221 |
 | MISSION_CLEAR_ALL | 45 | `MAVLink.Messages.Mission_Clear_All` | 3 | 232 |
 | MISSION_ITEM_REACHED | 46 | `MAVLink.Messages.Mission_Item_Reached` | 2 | 11 |

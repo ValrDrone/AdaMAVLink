@@ -17,6 +17,7 @@ package MAVLink.Dialect is
          when 30 => (Known => True, CRC_Extra => 39, Max_Length => 28),  --  ATTITUDE
          when 33 => (Known => True, CRC_Extra => 104, Max_Length => 28),  --  GLOBAL_POSITION_INT
          when 42 => (Known => True, CRC_Extra => 28, Max_Length => 6),  --  MISSION_CURRENT
+         when 43 => (Known => True, CRC_Extra => 132, Max_Length => 3),  --  MISSION_REQUEST_LIST
          when 44 => (Known => True, CRC_Extra => 221, Max_Length => 5),  --  MISSION_COUNT
          when 45 => (Known => True, CRC_Extra => 232, Max_Length => 3),  --  MISSION_CLEAR_ALL
          when 46 => (Known => True, CRC_Extra => 11, Max_Length => 2),  --  MISSION_ITEM_REACHED

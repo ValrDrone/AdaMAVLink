@@ -5,12 +5,20 @@ with GNATprove. Built for flight controllers, radio links and ground
 stations that must not crash on any byte sequence they receive.
 
 Status: early. The frame layer (checksum, byte-wise parser, encoder) and
-16 messages generated from the MAVLink XML definitions: HEARTBEAT, the
+17 messages generated from the MAVLink XML definitions: HEARTBEAT, the
 basic telemetry, STATUSTEXT, the command and the mission protocol messages
 ([messages](docs/messages.md)). More are a line each in
 `generator/messages.txt` ([design](docs/design.md)). `MAVLink.Envelope`
 carries frames over a CRSF serial line in the CRSF MAVLink envelope
 (type `16#AA#`), next to RC channels and link statistics.
+
+`MAVLink.Mission` runs the
+[mission protocol](https://mavlink.io/en/services/mission.html) from the
+ground station's side: uploading a mission to a vehicle and downloading
+one from it, with the handshake, sequencing and retries in a state
+machine. The caller supplies the transport, the clock and the items.
+`MAVLink.Link` stamps outgoing frames with a sender identity and sequence
+number and dispatches received messages through a static handler table.
 
 ## Use
 
