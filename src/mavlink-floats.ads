@@ -29,9 +29,10 @@ package MAVLink.Floats is
    function To_Long_Float (B : Double_Bits) return Long_Float
    with Pre => Is_Finite (B);
 
-   function To_Bits (X : Float) return Float_Bits
-   with Post => Is_Finite (To_Bits'Result);
+   --  The IEEE 754 bits of X, whatever they are: for a non-finite X the
+   --  result is a NaN or infinity pattern; check it with Is_Finite before
+   --  converting back.
+   function To_Bits (X : Float) return Float_Bits;
 
-   function To_Bits (X : Long_Float) return Double_Bits
-   with Post => Is_Finite (To_Bits'Result);
+   function To_Bits (X : Long_Float) return Double_Bits;
 end MAVLink.Floats;

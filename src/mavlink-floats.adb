@@ -3,7 +3,7 @@ with Ada.Unchecked_Conversion;
 --  Outside SPARK: the provers do not model a float's bits, so these four
 --  conversions are trusted, not proved. Their contracts hold because a
 --  finite bit pattern is a valid float of the same size (compile-time
---  checks in the spec), and a valid float's bits are finite.
+--  checks in the spec), and any float converts to its exact IEEE 754 bits.
 package body MAVLink.Floats
   with SPARK_Mode => Off
 is

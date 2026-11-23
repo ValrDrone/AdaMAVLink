@@ -101,14 +101,13 @@ package body MAVLink.Frames is
               (if P.Current.Length = 0 then Checksum_Low else Payload);
 
          when Payload       =>
-            if P.Count < P.Current.Length then
-               P.Count := P.Count + 1;
-               P.Current.Payload (P.Count) := B;
-               if P.Count = P.Current.Length then
-                  P.Phase := Checksum_Low;
-               end if;
-            else
-               P.Phase := Start;
+            --  Every entry into this phase has Count < Length: a new frame
+            --  starts at zero, and the phase is left as soon as it reaches
+            --  Length.
+            P.Count := P.Count + 1;
+            P.Current.Payload (P.Count) := B;
+            if P.Count = P.Current.Length then
+               P.Phase := Checksum_Low;
             end if;
 
          when Checksum_Low  =>
