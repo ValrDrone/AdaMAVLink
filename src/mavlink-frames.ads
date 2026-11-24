@@ -59,7 +59,10 @@ package MAVLink.Frames is
       Skipped_Bytes     : Count := 0;
    end record;
 
-   type Parser is private;
+   --  A parser starts consistent (Is_Consistent), so its users can prove
+   --  Push's precondition from a declaration alone.
+   type Parser is private
+     with Default_Initial_Condition => Is_Consistent (Parser);
 
    function Received (P : Parser) return Message;
 
@@ -67,7 +70,8 @@ package MAVLink.Frames is
 
    --  Invariant of a parser built by default and only modified by Push,
    --  restated in Push's own contracts so it is available to provers.
-   function Is_Consistent (P : Parser) return Boolean;
+   function Is_Consistent (P : Parser) return Boolean
+   with Global => null;
 
    --  Feed one byte.
    procedure Push (P : in out Parser; B : Unsigned_8; Result : out Event)
@@ -114,4 +118,15 @@ private
    function Received (P : Parser) return Message is (P.Current);
 
    function Counts (P : Parser) return Statistics is (P.Stats);
+
+   --  In the spec, so users' provers see what it says and that it reads
+   --  nothing but P.
+   function Is_Consistent (P : Parser) return Boolean is
+     (case P.Phase is
+        when Start                      => True,
+        when Length | Incompat | Compat | Sequence | System | Component
+         | Id_Low | Id_Middle | Id_High => P.Count = 0,
+        when Payload                    => P.Count < P.Current.Length,
+        when Checksum_Low | Checksum_High | Signature =>
+          P.Count = P.Current.Length);
 end MAVLink.Frames;

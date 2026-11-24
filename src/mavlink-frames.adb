@@ -41,15 +41,6 @@ package body MAVLink.Frames is
       end if;
    end Outcome;
 
-   function Is_Consistent (P : Parser) return Boolean is
-     (case P.Phase is
-        when Start                      => True,
-        when Length | Incompat | Compat | Sequence | System | Component
-         | Id_Low | Id_Middle | Id_High => P.Count = 0,
-        when Payload                    => P.Count < P.Current.Length,
-        when Checksum_Low | Checksum_High | Signature =>
-          P.Count = P.Current.Length);
-
    procedure Push (P : in out Parser; B : Unsigned_8; Result : out Event) is
    begin
       Result := None;
