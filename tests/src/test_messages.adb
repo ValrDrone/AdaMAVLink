@@ -22,6 +22,11 @@ with MAVLink.Messages.Mission_Ack;
 with MAVLink.Messages.Mission_Current;
 with MAVLink.Messages.Mission_Item_Reached;
 with MAVLink.Messages.Mission_Clear_All;
+with MAVLink.Messages.Autopilot_Version;
+with MAVLink.Messages.Param_Request_List;
+with MAVLink.Messages.Param_Request_Read;
+with MAVLink.Messages.Param_Value;
+with MAVLink.Messages.Param_Set;
 
 --  Every generated message against frames encoded by pymavlink: Pack and
 --  Encode give pymavlink's bytes, and Push and Unpack give the content back.
@@ -336,5 +341,90 @@ begin
       Check (MAVLink.Messages.Mission_Clear_All.Unpack (Received (P)) = C, "MISSION_CLEAR_ALL unpacks");
    end;
 
-   Ada.Text_IO.Put_Line ("17 generated messages match pymavlink");
+   --  AUTOPILOT_VERSION
+   declare
+      use type MAVLink.Messages.Autopilot_Version.Content;
+      C : constant MAVLink.Messages.Autopilot_Version.Content :=
+        (Capabilities => 14912351744369368063, Flight_Sw_Version => 2398466404, Middleware_Sw_Version => 1488470336, Os_Sw_Version => 2707360201, Board_Version => 722805433, Flight_Custom_Version => [167, 212, 5, 11, 243, 129, 109, 56], Middleware_Custom_Version => [63, 129, 70, 47, 241, 157, 107, 7], Os_Custom_Version => [181, 215, 127, 185, 48, 170, 206, 60], Vendor_Id => 27041, Product_Id => 45026, Uid => 2255988993342517940, Uid2 => [22, 141, 193, 82, 167, 192, 228, 126, 32, 73, 176, 153, 26, 172, 47, 8, 46, 70]);
+      Expected : constant Byte_Array (1 .. 90) :=
+        [16#FD#, 16#4E#, 16#00#, 16#00#, 16#11#, 16#01#, 16#01#, 16#94#, 16#00#, 16#00#, 16#FF#, 16#1B#, 16#D0#, 16#08#, 16#E7#, 16#50#, 16#F3#, 16#CE#, 16#B4#, 16#32#, 16#5F#, 16#65#, 16#09#, 16#E2#, 16#4E#, 16#1F#, 16#64#, 16#B1#, 16#F5#, 16#8E#, 16#40#, 16#41#, 16#B8#, 16#58#, 16#C9#, 16#09#, 16#5F#, 16#A1#, 16#B9#, 16#22#, 16#15#, 16#2B#, 16#A1#, 16#69#, 16#E2#, 16#AF#, 16#A7#, 16#D4#, 16#05#, 16#0B#, 16#F3#, 16#81#, 16#6D#, 16#38#, 16#3F#, 16#81#, 16#46#, 16#2F#, 16#F1#, 16#9D#, 16#6B#, 16#07#, 16#B5#, 16#D7#, 16#7F#, 16#B9#, 16#30#, 16#AA#, 16#CE#, 16#3C#, 16#16#, 16#8D#, 16#C1#, 16#52#, 16#A7#, 16#C0#, 16#E4#, 16#7E#, 16#20#, 16#49#, 16#B0#, 16#99#, 16#1A#, 16#AC#, 16#2F#, 16#08#, 16#2E#, 16#46#, 16#A0#, 16#4D#];
+   begin
+      Encode
+        ((Sequence => 17, System => 1, Component => 1, Id => MAVLink.Messages.Autopilot_Version.Id,
+          Compat_Flags => 0),
+         MAVLink.Messages.Autopilot_Version.Pack (C), Frame, Last);
+      Check (Frame (1 .. Last) = Expected, "AUTOPILOT_VERSION encodes as pymavlink");
+      Check (Feed (Expected) = Message_Ready, "AUTOPILOT_VERSION parses");
+      Check (MAVLink.Messages.Autopilot_Version.Unpack (Received (P)) = C, "AUTOPILOT_VERSION unpacks");
+   end;
+
+   --  PARAM_REQUEST_LIST
+   declare
+      use type MAVLink.Messages.Param_Request_List.Content;
+      C : constant MAVLink.Messages.Param_Request_List.Content :=
+        (Target_System => 242, Target_Component => 218);
+      Expected : constant Byte_Array (1 .. 14) :=
+        [16#FD#, 16#02#, 16#00#, 16#00#, 16#12#, 16#01#, 16#01#, 16#15#, 16#00#, 16#00#, 16#F2#, 16#DA#, 16#10#, 16#46#];
+   begin
+      Encode
+        ((Sequence => 18, System => 1, Component => 1, Id => MAVLink.Messages.Param_Request_List.Id,
+          Compat_Flags => 0),
+         MAVLink.Messages.Param_Request_List.Pack (C), Frame, Last);
+      Check (Frame (1 .. Last) = Expected, "PARAM_REQUEST_LIST encodes as pymavlink");
+      Check (Feed (Expected) = Message_Ready, "PARAM_REQUEST_LIST parses");
+      Check (MAVLink.Messages.Param_Request_List.Unpack (Received (P)) = C, "PARAM_REQUEST_LIST unpacks");
+   end;
+
+   --  PARAM_REQUEST_READ
+   declare
+      use type MAVLink.Messages.Param_Request_Read.Content;
+      C : constant MAVLink.Messages.Param_Request_Read.Content :=
+        (Target_System => 79, Target_Component => 162, Param_Id => [96, 49, 85, 62, 107, 106, 74, 115, 116, 81, 117, 68, 102, 100, 111, 114], Param_Index => (-22541));
+      Expected : constant Byte_Array (1 .. 32) :=
+        [16#FD#, 16#14#, 16#00#, 16#00#, 16#13#, 16#01#, 16#01#, 16#14#, 16#00#, 16#00#, 16#F3#, 16#A7#, 16#4F#, 16#A2#, 16#60#, 16#31#, 16#55#, 16#3E#, 16#6B#, 16#6A#, 16#4A#, 16#73#, 16#74#, 16#51#, 16#75#, 16#44#, 16#66#, 16#64#, 16#6F#, 16#72#, 16#06#, 16#4C#];
+   begin
+      Encode
+        ((Sequence => 19, System => 1, Component => 1, Id => MAVLink.Messages.Param_Request_Read.Id,
+          Compat_Flags => 0),
+         MAVLink.Messages.Param_Request_Read.Pack (C), Frame, Last);
+      Check (Frame (1 .. Last) = Expected, "PARAM_REQUEST_READ encodes as pymavlink");
+      Check (Feed (Expected) = Message_Ready, "PARAM_REQUEST_READ parses");
+      Check (MAVLink.Messages.Param_Request_Read.Unpack (Received (P)) = C, "PARAM_REQUEST_READ unpacks");
+   end;
+
+   --  PARAM_VALUE
+   declare
+      use type MAVLink.Messages.Param_Value.Content;
+      C : constant MAVLink.Messages.Param_Value.Content :=
+        (Param_Id => [98, 51, 55, 41, 51, 60, 106, 47, 96, 43, 94, 40, 120, 54, 115, 105], Param_Value => 16#C447193A#, Param_Type => 111, Param_Count => 29321, Param_Index => 62259);
+      Expected : constant Byte_Array (1 .. 37) :=
+        [16#FD#, 16#19#, 16#00#, 16#00#, 16#14#, 16#01#, 16#01#, 16#16#, 16#00#, 16#00#, 16#3A#, 16#19#, 16#47#, 16#C4#, 16#89#, 16#72#, 16#33#, 16#F3#, 16#62#, 16#33#, 16#37#, 16#29#, 16#33#, 16#3C#, 16#6A#, 16#2F#, 16#60#, 16#2B#, 16#5E#, 16#28#, 16#78#, 16#36#, 16#73#, 16#69#, 16#6F#, 16#EC#, 16#EC#];
+   begin
+      Encode
+        ((Sequence => 20, System => 1, Component => 1, Id => MAVLink.Messages.Param_Value.Id,
+          Compat_Flags => 0),
+         MAVLink.Messages.Param_Value.Pack (C), Frame, Last);
+      Check (Frame (1 .. Last) = Expected, "PARAM_VALUE encodes as pymavlink");
+      Check (Feed (Expected) = Message_Ready, "PARAM_VALUE parses");
+      Check (MAVLink.Messages.Param_Value.Unpack (Received (P)) = C, "PARAM_VALUE unpacks");
+   end;
+
+   --  PARAM_SET
+   declare
+      use type MAVLink.Messages.Param_Set.Content;
+      C : constant MAVLink.Messages.Param_Set.Content :=
+        (Target_System => 184, Target_Component => 22, Param_Id => [94, 109, 76, 41, 71, 37, 98, 58, 39, 83, 104, 111, 112, 122, 110, 95], Param_Value => 16#C5675BCD#, Param_Type => 144);
+      Expected : constant Byte_Array (1 .. 35) :=
+        [16#FD#, 16#17#, 16#00#, 16#00#, 16#15#, 16#01#, 16#01#, 16#17#, 16#00#, 16#00#, 16#CD#, 16#5B#, 16#67#, 16#C5#, 16#B8#, 16#16#, 16#5E#, 16#6D#, 16#4C#, 16#29#, 16#47#, 16#25#, 16#62#, 16#3A#, 16#27#, 16#53#, 16#68#, 16#6F#, 16#70#, 16#7A#, 16#6E#, 16#5F#, 16#90#, 16#2A#, 16#AE#];
+   begin
+      Encode
+        ((Sequence => 21, System => 1, Component => 1, Id => MAVLink.Messages.Param_Set.Id,
+          Compat_Flags => 0),
+         MAVLink.Messages.Param_Set.Pack (C), Frame, Last);
+      Check (Frame (1 .. Last) = Expected, "PARAM_SET encodes as pymavlink");
+      Check (Feed (Expected) = Message_Ready, "PARAM_SET parses");
+      Check (MAVLink.Messages.Param_Set.Unpack (Received (P)) = C, "PARAM_SET unpacks");
+   end;
+
+   Ada.Text_IO.Put_Line ("22 generated messages match pymavlink");
 end Test_Messages;

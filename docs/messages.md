@@ -8,6 +8,10 @@ Generated from `definitions/common.xml` by
 | --- | --- | --- | --- | --- |
 | HEARTBEAT | 0 | `MAVLink.Messages.Heartbeat` | 9 | 50 |
 | SYS_STATUS | 1 | `MAVLink.Messages.Sys_Status` | 43 | 124 |
+| PARAM_REQUEST_READ | 20 | `MAVLink.Messages.Param_Request_Read` | 20 | 214 |
+| PARAM_REQUEST_LIST | 21 | `MAVLink.Messages.Param_Request_List` | 2 | 159 |
+| PARAM_VALUE | 22 | `MAVLink.Messages.Param_Value` | 25 | 220 |
+| PARAM_SET | 23 | `MAVLink.Messages.Param_Set` | 23 | 168 |
 | GPS_RAW_INT | 24 | `MAVLink.Messages.Gps_Raw_Int` | 52 | 24 |
 | ATTITUDE | 30 | `MAVLink.Messages.Attitude` | 28 | 39 |
 | GLOBAL_POSITION_INT | 33 | `MAVLink.Messages.Global_Position_Int` | 28 | 104 |
@@ -22,4 +26,5 @@ Generated from `definitions/common.xml` by
 | COMMAND_INT | 75 | `MAVLink.Messages.Command_Int` | 35 | 158 |
 | COMMAND_LONG | 76 | `MAVLink.Messages.Command_Long` | 33 | 152 |
 | COMMAND_ACK | 77 | `MAVLink.Messages.Command_Ack` | 10 | 143 |
+| AUTOPILOT_VERSION | 148 | `MAVLink.Messages.Autopilot_Version` | 78 | 178 |
 | STATUSTEXT | 253 | `MAVLink.Messages.Statustext` | 54 | 83 |

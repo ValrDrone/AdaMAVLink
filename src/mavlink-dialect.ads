@@ -13,6 +13,10 @@ package MAVLink.Dialect is
    is (case Id is
          when 0 => (Known => True, CRC_Extra => 50, Max_Length => 9),  --  HEARTBEAT
          when 1 => (Known => True, CRC_Extra => 124, Max_Length => 43),  --  SYS_STATUS
+         when 20 => (Known => True, CRC_Extra => 214, Max_Length => 20),  --  PARAM_REQUEST_READ
+         when 21 => (Known => True, CRC_Extra => 159, Max_Length => 2),  --  PARAM_REQUEST_LIST
+         when 22 => (Known => True, CRC_Extra => 220, Max_Length => 25),  --  PARAM_VALUE
+         when 23 => (Known => True, CRC_Extra => 168, Max_Length => 23),  --  PARAM_SET
          when 24 => (Known => True, CRC_Extra => 24, Max_Length => 52),  --  GPS_RAW_INT
          when 30 => (Known => True, CRC_Extra => 39, Max_Length => 28),  --  ATTITUDE
          when 33 => (Known => True, CRC_Extra => 104, Max_Length => 28),  --  GLOBAL_POSITION_INT
@@ -27,6 +31,7 @@ package MAVLink.Dialect is
          when 75 => (Known => True, CRC_Extra => 158, Max_Length => 35),  --  COMMAND_INT
          when 76 => (Known => True, CRC_Extra => 152, Max_Length => 33),  --  COMMAND_LONG
          when 77 => (Known => True, CRC_Extra => 143, Max_Length => 10),  --  COMMAND_ACK
+         when 148 => (Known => True, CRC_Extra => 178, Max_Length => 78),  --  AUTOPILOT_VERSION
          when 253 => (Known => True, CRC_Extra => 83, Max_Length => 54),  --  STATUSTEXT
          when others => (others => <>));
 
