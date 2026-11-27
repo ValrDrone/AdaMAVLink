@@ -32,6 +32,7 @@ package MAVLink.Dialect is
          when 76 => (Known => True, CRC_Extra => 152, Max_Length => 33),  --  COMMAND_LONG
          when 77 => (Known => True, CRC_Extra => 143, Max_Length => 10),  --  COMMAND_ACK
          when 148 => (Known => True, CRC_Extra => 178, Max_Length => 78),  --  AUTOPILOT_VERSION
+         when 242 => (Known => True, CRC_Extra => 104, Max_Length => 60),  --  HOME_POSITION
          when 253 => (Known => True, CRC_Extra => 83, Max_Length => 54),  --  STATUSTEXT
          when others => (others => <>));
 

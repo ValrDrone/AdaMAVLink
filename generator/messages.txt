@@ -29,6 +29,9 @@ MISSION_CLEAR_ALL
 # Vehicle identity and capabilities (answers MAV_CMD_REQUEST_MESSAGE)
 AUTOPILOT_VERSION
 
+# Home (answers MAV_CMD_REQUEST_MESSAGE, and sent when it is set)
+HOME_POSITION
+
 # Parameter protocol
 PARAM_REQUEST_LIST
 PARAM_REQUEST_READ

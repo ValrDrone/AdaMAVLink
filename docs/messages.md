@@ -27,4 +27,5 @@ Generated from `definitions/common.xml` by
 | COMMAND_LONG | 76 | `MAVLink.Messages.Command_Long` | 33 | 152 |
 | COMMAND_ACK | 77 | `MAVLink.Messages.Command_Ack` | 10 | 143 |
 | AUTOPILOT_VERSION | 148 | `MAVLink.Messages.Autopilot_Version` | 78 | 178 |
+| HOME_POSITION | 242 | `MAVLink.Messages.Home_Position` | 60 | 104 |
 | STATUSTEXT | 253 | `MAVLink.Messages.Statustext` | 54 | 83 |
